@@ -7,10 +7,7 @@ internal class Program
     //===============================================================================================================================
 
     //Array
-    static string[] nomesMotores = new string[15];
     static double[] gastosMotores = new double[15];
-    static int quantidadeMotores = 0;
-
 
 
     //===============================================================================================================================
@@ -18,32 +15,24 @@ internal class Program
     //função que lança o gasto de cada motor
     static void lancargastos()
     {
-
+        int qualMotor;
         double valor;
 
         Console.Clear();
         Console.WriteLine("Lançar Gastos: ");
-       
-        
-       // Verificar se o limite máximo de motores foi atingido
 
-        if (quantidadeMotores >= 15)
+        do
         {
-            Console.WriteLine("Limite máximo de motores atingido.");
-            return;
-           
+            Console.Write("Digite o número do motor: ");
+            qualMotor = int.Parse(Console.ReadLine());  
         }
+        while (qualMotor < 1 || qualMotor > 15);
 
-        Console.Write("Digite o nome do motor: ");
-        string motor = Console.ReadLine(); // Ler o nome do motor digitado pelo usuário
-        
 
         do
         {
 
             Console.Write("Digite o valor do gasto: ");
-            
-
             valor = double.Parse(Console.ReadLine()); //armazena na variavel valor
 
 
@@ -53,59 +42,43 @@ internal class Program
                 Console.WriteLine("Gasto lançado com sucesso!");
                 // Ler e validar o valor do gasto digitado pelo usuário
 
-                nomesMotores[quantidadeMotores] = motor;
-                gastosMotores[quantidadeMotores] = valor;
-                quantidadeMotores++;
-                // Armazenar o nome do motor e o valor do gasto no array
+                gastosMotores[qualMotor-1] += valor;
+           
             }
 
             else
             {
-
                 Console.Clear();
                 Console.WriteLine("Valor inválido. Digite novamente: ");
-
-                
-
-              
             }
-
-
-
-            
-
         } while (valor <= 0);
 
     }
 
-        //===============================================================================================================================
+    //===============================================================================================================================
 
-        //função que gera relatorio de gastos
+    //função que gera relatorio de gastos
 
-        static void mostrargastos()
+    static void mostrargastos()
     {
         Console.Clear();
-        Console.WriteLine(" Gastos: ");
-
-        // Verificar se não há motores cadastrados
-        if (quantidadeMotores == 0)
-        {
-            Console.WriteLine("Não Ha motores cadastrados.");
-            return;
-
-        }
-
         Console.WriteLine("Gastos:");
 
-        for(int i = 0; i < quantidadeMotores; i++)
-        {
-            Console.WriteLine($"{ nomesMotores[i]}:R$ {gastosMotores[i]}");
-        }
-        //exibe gasto de cada motor
+        double totalGastos = 0; // variável para armazenar o valor total dos gastos
 
+        for (int i = 0; i < 15; i++)
+        {
+            Console.WriteLine($"Motor {i + 1}: R$ {gastosMotores[i]}"); // exibe gasto de cada motor
+            totalGastos += gastosMotores[i]; // adiciona o gasto atual ao total
+        }
+
+        Console.WriteLine($"Valor total Gasto: R$ {totalGastos}");
     }
+
+
+
     //===============================================================================================================================
-    
+
     //função motor que mais gastou
 
     static void motorquemaisgastou()                          
@@ -113,29 +86,24 @@ internal class Program
         Console.Clear();
         Console.WriteLine(" Motor com maior gasto: ");
 
-        // Verificar se não há motores cadastrados
-        if (quantidadeMotores == 0)
-        {
-            Console.WriteLine("Não Ha motores cadastrados.");
-            return;
-
-        }
-
-       
 
         double maiorGasto = gastosMotores[0];
-        string motorMaisGastou = nomesMotores[0];
+        int motorMaisGastou = 0;
 
-        for (int i = 1; i < quantidadeMotores; i++)
+        for (int i = 1; i < 15; i++)
         {
             if (gastosMotores[i] > maiorGasto)
             {
                 maiorGasto = gastosMotores[i];
-                motorMaisGastou = nomesMotores[i];
+                motorMaisGastou = i;
             }
         }
 
-        Console.WriteLine($"Motor que mais gastou: {motorMaisGastou} (R$ {maiorGasto})");
+        if (maiorGasto > 0) //verifica se foi lançado valor em algum motor.
+            
+            Console.WriteLine($"Motor que mais gastou: {motorMaisGastou + 1} (R$ {maiorGasto})");
+
+        else Console.WriteLine("Não houve gastos");
     
 
 
@@ -195,6 +163,7 @@ internal class Program
 
             if (opcao == "3")
             {
+
                 motorquemaisgastou();
             }
             Console.WriteLine();
